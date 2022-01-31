@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# script for avoiding typing header for curl command. Usage: ./curl 
+/usr/bin/curl -H "Content-Type: application/json" "$@"
