@@ -2,7 +2,7 @@
 
 ## Download toy dataset - MovieLens
 
-```
+```bash
 wget http://media.sundog-soft.com/es/ml-latest-small.zip
 unzip ml-latest-small.zip
 rm ml-latest-small.zip
@@ -13,7 +13,7 @@ rm ml-latest-small.zip
 A mapping is a schema definition. Elasticsearch has reasonable defaults, but sometimes you need to customize them.
 
 Example:
-```
+```bash
 curl -H "Content-Type: application/json" -XPUT 127.0.0.1:9200/movies -d '
 {
     "mappings": {
@@ -24,9 +24,17 @@ curl -H "Content-Type: application/json" -XPUT 127.0.0.1:9200/movies -d '
 }'
 ```
 
+## Get mapping definition
+
+
+```bash
+curl -H "Content-Type: application/json" -XGET 127.0.0.1:9200/movies/_mapping
+```
+
+
 ## Common mappings
 
-```
+```bash
 {
     ... 
     "properties": {
@@ -38,6 +46,8 @@ curl -H "Content-Type: application/json" -XPUT 127.0.0.1:9200/movies -d '
     ...
 }
 ```
+
+
 
 ### More about the analyzers:
 - Character filters

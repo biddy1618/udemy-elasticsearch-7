@@ -1,4 +1,5 @@
 #!/bin/bash
+export CONTENT_TYPE='Content-Type: application/json';
 
 # script for avoiding typing header for curl command. Usage: ./curl 
-/usr/bin/curl -H "Content-Type: application/json" "$@"
+/usr/bin/curl -H "$CONTENT_TYPE" "$@"

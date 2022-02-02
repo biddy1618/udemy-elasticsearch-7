@@ -10,7 +10,7 @@ CAVEAT: the course uses 7.0.0 version
 
 I will be using Docker container for installation.
 
-```
+```bash
 docker pull docker pull docker.elastic.co/elasticsearch/elasticsearch:7.16.3
 docker run -p 127.0.0.1:9200:9200 -p 127.0.0.1:9300:9300 -e "discovery.type=single-node" --name es docker.elastic.co/elasticsearch/elasticsearch:7.16.3
 ```
@@ -18,6 +18,6 @@ docker run -p 127.0.0.1:9200:9200 -p 127.0.0.1:9300:9300 -e "discovery.type=sing
 Check the browser at address - http://127.0.0.1:9200 or through bash `curl -XGET 127.0.0.1:9200`.
 
 To connect to docker container, run the following:
-```
+```bash
 docker exec -it es bash
 ```

@@ -1,7 +1,7 @@
 # Inserting single data
 
 Inserting "Interstellar" movie into created index "movies" (ID of the movie is 109487 within MovieLens DB):
-```
+```bash
 ./curl -XPOST 127.0.0.1:9200/movies/_doc/109487 -d '
 {
     "genre": ["IMAX", "Sci-Fi"],
@@ -11,14 +11,14 @@ Inserting "Interstellar" movie into created index "movies" (ID of the movie is 1
 ```
 
 To get the all search results from our index:
-```
+```bash
 ./curl -XGET 127.0.0.1:9200/movies/_search?pretty
 ```
 
 # Inserting bulk data
 
 The insertion happens the following way:
-```
+```bash
 ./curl -XPUT 127.0.0.1:9200/_bulk -d '
 { "create" : { "_index" : "movies", "_id" : "135569" } }
 { "id": "135569", "title" : "Star Trek Beyond", "year":2016 , "genre":["Action", "Adventure", "Sci-Fi"] }
@@ -35,7 +35,7 @@ The insertion happens the following way:
 The reason why it is formatted this way is that Elasticsearch needs to distribute each documents into its own shard based on generated hash.
 
 One can use file to insert the data as following:
-```
+```bash
 ./curl -XPUT 127.0.0.1:9200/_bulk?pretty --data-binary @data/movies.json
 ```
 
@@ -46,7 +46,7 @@ Every document has a `_version` field. Elasticsearch documents are immutable. Wh
 - the old document is marked fir deletion
 
 Update command (note that `-XPOST` method is used for updates):
-```
+```bash
 ./curl -XPOST 127.0.0.1:9200/movies/_doc/109487/_update -d '
 {
     "doc": {
@@ -55,7 +55,7 @@ Update command (note that `-XPOST` method is used for updates):
 }'
 ```
 or one can insert whole document with updated fields:
-```
+```bash
 ./curl -XPUT 127.0.0.1:9200/movies/_doc/109487?pretty -d '
 {
     "genres": ["IMAX", "Sci-Fi"],
@@ -65,7 +65,7 @@ or one can insert whole document with updated fields:
 ```
 
 To check:
-```
+```bash
 ./curl -XGET 127.0.0.1:9200/movies/_doc/109487?pretty
 ```
 
@@ -74,6 +74,6 @@ So, in summary, you can specify every field as a PUT command, or partial update 
 # Deleting data
 
 To delete, use DELETE command with index and document specified to Elasticsearch host via HTTP call:
-```
+```bash
 ./curl -XDELETE 127.0.0.1:9200/movies/_doc/58559
 ```
