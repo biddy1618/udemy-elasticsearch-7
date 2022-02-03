@@ -66,3 +66,40 @@ curl -H "Content-Type: application/json" -XGET 127.0.0.1:9200/movies/_mapping
     - Splits on whitespace but doesn't lowercase
 - Language (i.e. english)
     - Accounts for language-specific stopwords and stemming
+
+
+# More on mappings
+
+A mapping essentially entails two parts:
+- The process - defining how JSON documents will be stored
+- The result - the actual metadata resulting from the definition process
+
+## The mapping process
+
+- Explicit mapping - fields and their types are predefined
+- Dynamic mapping - fields and their types automatically defined ES
+
+## Challenges
+
+- Explicit mapping - mapping exceptions when there's a mismatch
+- Dynamic mapping - may lead to mapping explosion
+
+## Exceptions
+
+When exceptions arise, one can use partially solve the issue by defining an ignore or malformed mapping parameter. This is not a dynamic parameter, so either it needs to be set when creating the index, or _close_ the index, change the setting, and _reopen_ the index.
+
+Closing, changing the setting, and reopening index (more on the `microservice-logs` index in data folder):
+```bash
+./curl --request POST 'http://localhost:9200/microservice-logs/_close'
+./curl --location --request PUT 'http://localhost:9200/microservice-logs/_settings' \
+--data-raw '{
+   "index.mapping.ignore_malformed": true
+}'
+./curl --request POST 'http://localhost:9200/microservice-logs/_open'
+```
+
+But this `index.mapping.ingore_malformed` parameter can't handle JSON objects as an input. For example, we have a field `message` with type `text` and if we post JSON data in field `message`, it is going to provoke an exception.
+
+One more limitation to dynamic mappings is that once the mapping is defined, if we try to insert data with more nested field for JSON-like field, it will provoke exception as well.
+
+On top of that, the default max number of fields for index is 1000, and if you try to define mapping with more than 1000 fields, ES will throw `illegal_argument_exception`. This setting can be change, however it might come with bigger complexity like performance degradations and high memory pressure,

@@ -1,6 +1,6 @@
 export CONTAINER_NAME=es
 
-if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
+if [[ $(docker ps -a --format '{{.Names}}' | grep $CONTAINER_NAME) ]]; then
     echo "Found container under name $CONTAINER_NAME";
     if [ "`docker inspect -f {{.State.Running}} $CONTAINER_NAME`" == "false" ]; then
         echo "Container $CONTAINER_NAME state - not running";
@@ -21,7 +21,7 @@ else
     curl -H "Content-Type: application/json" -XPOST '127.0.0.1:9200/shakespeare/_bulk' --data-binary "@data/shakespeare_7.0.json" > /dev/null 2>&1;
     
     echo "Injecting data - '{"mappings": {"properties": {"year": {"type": "date"}}}}'";
-    curl -H "Content-Type: application/json" -XPUT 127.0.0.1:9200/movies -d '{"mappings": {"properties": {"year": {"type": "date"}}}}' > /dev/null 2>&1;
+    curl -H "Content-Type: application/json" -XPUT 127.0.0.1:9200/movies --data-binary  "@data/movies-mapping.json" > /dev/null 2>&1;
     echo "Injecting data - data/movies.json";
     curl -H "Content-Type: application/json" -XPUT 127.0.0.1:9200/_bulk --data-binary "@data/movies.json" > /dev/null 2>&1;
 fi;
