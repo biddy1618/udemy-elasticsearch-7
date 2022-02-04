@@ -1,7 +1,12 @@
 {
     "query": {
-        "match_phrase": {
-            "genre": "Sci-Fi"
+        "bool": {
+            "filter": [{
+                "term": {"genre": "Sci-Fi"}
+             }, {
+                "term": {"title": "trek"}
+             }]            
+            }
         }
     }
 }
